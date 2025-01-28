@@ -79,8 +79,11 @@ def create_light_or_dark_color(temp_dict, a, i, r1, g1, b1, r2, g2, b2):
     else:
         create_color(temp_dict, i, r2, g2, b2)
 # ---------------------------------------------------------------------------------------------
-def create_colors_dict(temp_dict):
+def create_colors_dict():
     """Creates a dictionary of color name dictionaries that have color codes and lock-status"""
+    temp_dict = create_color_names_n_codes()
+    # print(temp_dict)
+
     colors_dict = {}
 
     for i in colors:
@@ -90,9 +93,7 @@ def create_colors_dict(temp_dict):
 
     return colors_dict
 # ---------------------------------------------------------------------------------------------
-temp_dict = create_color_names_n_codes()
-# print(temp_dict)
-
-colors_dict = create_colors_dict(temp_dict)
-print(colors_dict)
+colors_dict = create_colors_dict()
+# print(colors_dict)
 # ---------------------------------------------------------------------------------------------
+
