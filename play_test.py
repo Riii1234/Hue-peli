@@ -3,6 +3,7 @@ from color_dict import create_colors_dict
 def play_tester(original_list, shuffled_list, locked):
 
     shuffled_names = ["r_1", "r_4", "r_5", "r_8", "r_9", "r_2", "r_3", "r_10", "r_7", "r_6", "r_11"]
+    moves = 0
 
     locked_places = []
     for i in locked:
@@ -13,6 +14,7 @@ def play_tester(original_list, shuffled_list, locked):
         print("Level is:")
         print(shuffled_names)
         print("Locked places:", locked_places)
+
         place_from = int(input(f"Which place moves: (1-{len(shuffled_list)})"))
         place_to = int(input(f"Where is it moved: (1-{len(shuffled_list)})"))
 
@@ -25,8 +27,11 @@ def play_tester(original_list, shuffled_list, locked):
         shuffled_list[place_from-1] = temp
         shuffled_names[place_from-1] = temp_name
 
+        moves += 1
+
         if shuffled_list == original_list:
             print("Congratulations! Level complete!")
+            print(f"You took {moves} moves.")
             break
 
 colors_dict = create_colors_dict()
