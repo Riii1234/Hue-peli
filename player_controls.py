@@ -13,7 +13,6 @@ def player_data_loader():
     reconstructed_player_list = []
     for dict in player_list:
         incomplete_player_levels = dict["incomplete_levels"]
-        complete_levels_latest = dict["complete_levels_latest"]
         complete_levels_best = dict["complete_levels_best"]
 
         #reconstructs the incomplete levels as a list
@@ -24,25 +23,6 @@ def player_data_loader():
                 ipl_temporary += letter
         incomplete_player_levels = ipl_temporary.split()
         #print(incomplete_player_levels)
-
-        #reconstructs complete levels latest as a list
-        complete_levels_latest = complete_levels_latest[1:-1]
-        cll_temporary = ""
-        for letter in complete_levels_latest:
-            if letter != " " and letter != "'":
-                cll_temporary += letter
-        complete_levels_latest = cll_temporary.split(",")
-
-        #puts the list items into a dictionary
-        if '' in complete_levels_latest:
-            complete_levels_latest = {}
-        else:
-            levels_latest_dict = {}
-            for level in complete_levels_latest:
-                y = level.split(":")
-                levels_latest_dict[y[0]] = int(y[1])
-            complete_levels_latest = levels_latest_dict
-            #print(complete_levels_latest)
 
         #reconstructs complete levels best as a list
         complete_levels_best = complete_levels_best[1:-1]
@@ -64,7 +44,6 @@ def player_data_loader():
             #print(complete_levels_best)
 
         dict["incomplete_levels"] = incomplete_player_levels
-        dict["complete_levels_latest"] = complete_levels_latest
         dict["complete_levels_best"] = complete_levels_best
         reconstructed_player_list.append(dict)
 
@@ -73,7 +52,7 @@ def player_data_loader():
 #writing player data
 def player_data_writer(player_list):
     """writes the player list down into the csv file"""
-    fields = ["username","incomplete_levels","complete_levels_latest","complete_levels_best"]
+    fields = ["username","incomplete_levels","complete_levels_best"]
     with open(f"player_data.csv","w",newline="",encoding='utf-8-sig', errors='replace') as player_file:
         writer = csv.DictWriter(player_file,fieldnames=fields)
         writer.writeheader()
@@ -178,7 +157,6 @@ def player_creation():
         new_player = {}
         new_player["username"] = name
         new_player["incomplete_levels"] = ['1.1', '1.2', '1.3', '2.1', '2.2', '2.3', '3.1', '3.2', '3.3']
-        new_player["complete_levels_latest"] = {}
         new_player["complete_levels_best"] = {}
         player_list.append(new_player)
         player_data_writer(player_list)
@@ -219,8 +197,10 @@ def to_hue(player_data):
 def score_comparison(player_tag: str, level_number: str, move_count):
     """logic for player moveset comparison"""
     #chooses player data based on tag and makes calculations based on scores
+    #player data
     player_list = player_data_loader()
 
+    #separate the player from the rest
     new_player_list = []
     for dict in player_list:
         if dict["username"] == player_tag:
@@ -228,46 +208,63 @@ def score_comparison(player_tag: str, level_number: str, move_count):
         else:
             new_player_list.append(dict)
 
-    #test
-    print(player_data)
-
     #puts in the data straight away if the level wasn't complete before
     if level_number in player_data["incomplete_levels"]:
         player_data["incomplete_levels"].remove(level_number)
-        player_data["complete_levels_latest"][level_number] = move_count
         player_data["complete_levels_best"][level_number] = move_count
+        old_move_count = 0
     
     #if the particular level data exists it compares and then inputs
     else:
+        old_move_count = player_data["complete_levels_best"][level_number]
         if move_count < player_data["complete_levels_best"][level_number]:
             player_data["complete_levels_best"][level_number] = move_count
-        player_data["complete_levels_latest"][level_number] = move_count
 
+    #global rank counter
     new_player_list.append(player_data)
-    #test
-    print(player_data)
-
-    #score countings
-    average_latest = 0
-    average_best = 0
-    completion_counter = 0
-
+    global_level_score = {}
     for dict in new_player_list:
         try:
-            average_latest += dict["complete_levels_latest"][level_number]
-            average_best += dict["complete_levels_best"][level_number]
-            completion_counter += 1
-        except KeyError:
+            global_level_score[dict["username"]] = dict["complete_levels_best"][level_number]
+        except IndexError:
             pass
-    
-    average_latest = round(average_latest / completion_counter)
-    average_best = round(average_best / completion_counter)
+    global_score_list = sorted(global_level_score.items(), key=lambda item: item[1])
 
-    #test
-    print("avg latest",average_latest)
-    print("avg best",average_best)
+    #The rank is also based on shared positions. All same scores are put in the same rank, and the following rank is increased by x-1 where x is the amount of entries in a shared rank
+    rank_counter = 0
+    next_rank_change = 0
+    old_entry = -1
+    for entry in global_score_list:
+        if entry[1] != old_entry:
+            rank_counter += 1
+            rank_counter += next_rank_change
+            next_rank_change = 0
+        elif entry[1] == old_entry:
+            next_rank_change += 1
+        if entry[0] == player_tag:
+            break
+        old_entry = entry[1]
 
+    #score countings
+    print()
+    if old_move_count == 0:
+        print("Your first score is your best score")
+        print(f"Score: {move_count}\n")
+    elif move_count > old_move_count:
+        print("This isn't your best score")
+        print(f"Current score: {move_count}")
+        print(f"Best score: {old_move_count}\n")
+    elif move_count < old_move_count:
+        print("This is your best score")
+        print(f"New best score: {move_count}")
+        print(f"Old best score: {old_move_count}\n")
+    elif move_count == old_move_count:
+        print("This score is tied with a previous best score")
+        print(f"Score: {move_count}\n")
+    print(f"Globally you are ranked: {rank_counter}")
 
+    #IMPORTANT: below is the file writer, disabled for testings
+    #player_data_writer(new_player_list)
     
         
 
@@ -277,4 +274,4 @@ os.system("cls")
 player_list = player_data_loader()
 player_data_writer(player_list)
 
-score_comparison("BOB","1.1",21)
+score_comparison("SAM","1.1",21)
