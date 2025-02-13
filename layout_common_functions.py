@@ -38,11 +38,12 @@ def on_click(event, canvas):
 
     selected = canvas.find_overlapping(event.x, event.y, event.x, event.y)
     if selected:
-        canvas.selected = selected[-1]  # select the top-most item
+        canvas.selected = selected[-1]
+        # Moves the selected piece to the top layer
         canvas.tag_raise(canvas.selected)
         canvas.startxy = (event.x, event.y)
-        print("selected, canvas.selected, canvas.startxy")
-        print(selected, canvas.selected, canvas.startxy)
+        #print(selected, canvas.selected, canvas.startxy)
+
         global original_y_coord
         original_y_coord = event.y
     else:
@@ -53,12 +54,12 @@ def on_drag(event, canvas, locked):
 
     if canvas.selected:
         if canvas.selected not in locked:
-            # calculate distance moved from last position
+            # Calculate distance moved from last position
             dx, dy = event.x-canvas.startxy[0], event.y-canvas.startxy[1]
-            # move the selected item
+            # Move the selected item
             canvas.move(canvas.selected, dx, dy)
 
-            # update last position
+            # Update last position
             canvas.startxy = (event.x, event.y)
 # -------------------------------------------------------------------
 def on_release(event, canvas, locked):
@@ -67,9 +68,8 @@ def on_release(event, canvas, locked):
     if canvas.selected:
         if canvas.selected not in locked:
             pieces_on_place = canvas.find_overlapping(event.x, event.y, event.x, event.y)
-            print("pieces_on_place", pieces_on_place)
             piece_under = pieces_on_place[0]
-            print("piece_under", piece_under)
+            #print("piece_under", piece_under)
             if event.y > 79 and event.y < 120:
                 move_pieces(canvas, piece_under, 79)
 
@@ -99,6 +99,8 @@ def on_release(event, canvas, locked):
 
             else:
                 move_under_piece(canvas, canvas.selected)
+
+    game_complete()
 # -------------------------------------------------------------------
 def move_pieces(canvas, under_piece, selected_y):
     """Siirtää liikutetun palikan ja sen alle jäävän paikkoja"""
@@ -140,16 +142,6 @@ def move_under_piece(canvas, game_piece):
 
     canvas.moveto(game_piece, 99, original_y_coord)
 # -------------------------------------------------------------------
-# x1, y1, x2, y2
-# y1 += 40, y2 += 40
+def game_complete():
 
-# rectangle2 100, 80, 400, 120
-# rectangle3 100, 120, 400, 160
-# rectangle4 100, 160, 400, 200
-# rectangle5 100, 200, 400, 240
-# rectangle6 100, 240, 400, 280
-
-# rectangle7 100, 280, 400, 320
-# rectangle8 100, 320, 400, 360
-# rectangle9 100, 360, 400, 400
-# rectangle10 100, 400, 400, 420
+    pass
