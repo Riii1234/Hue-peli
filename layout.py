@@ -85,11 +85,11 @@ def start_level(root, level_number):
     from color_dict import colors_dict
 
     if level_number == "Easy 1":
-        locked = create_level_easy_1(canvas, colors_dict)
+        locked, original_colors, shuffled_colors = create_level_easy_1(canvas, colors_dict)
 
     # Bindataan hiiren painallus, vetäminen ja irti-päästäminen eventteihin
     canvas.bind("<Button-1>", lambda event:on_click(event, canvas))
     canvas.bind("<B1-Motion>", lambda event:on_drag(event, canvas, locked))
-    canvas.bind("<ButtonRelease-1>", lambda event:on_release(event, canvas, locked))
+    canvas.bind("<ButtonRelease-1>", lambda event:on_release(event, canvas, locked, original_colors, shuffled_colors))
 # -------------------------------------------------------------------
 

@@ -13,12 +13,12 @@ def create_level_easy_1(canvas, colors_dict):
     """Luodaan easy level 1"""
     import colour_shuffling
 
-    colors = [colors_dict["r_15"], colors_dict["r_20"], colors_dict["r_25"], colors_dict["r_30"], \
+    original_colors = [colors_dict["r_15"], colors_dict["r_20"], colors_dict["r_25"], colors_dict["r_30"], \
               colors_dict["r_35"], colors_dict["r_40"], colors_dict["r_45"], colors_dict["r_50"], \
                 colors_dict["r_55"], colors_dict["r_60"], colors_dict["r_65"]]
     lock_list = [0,-1]
     
-    shuffled_colors = colour_shuffling.shuffle_list(colors, lock_list)
+    shuffled_colors = colour_shuffling.shuffle_list(original_colors, lock_list)
 
     create_level(canvas, 100, 40, 400, 80, shuffled_colors)
 
@@ -27,6 +27,6 @@ def create_level_easy_1(canvas, colors_dict):
     dot2 = canvas.create_oval(248, 458, 252, 462, tags = "point", fill = "black")
 
     # Palauttaa listassa lukossa olevat
-    return [1, 11, 12, 13]
+    return ([1, 11, 12, 13], original_colors, shuffled_colors)
 # -------------------------------------------------------------------
               

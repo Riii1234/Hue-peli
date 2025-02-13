@@ -62,7 +62,7 @@ def on_drag(event, canvas, locked):
             # Update last position
             canvas.startxy = (event.x, event.y)
 # -------------------------------------------------------------------
-def on_release(event, canvas, locked):
+def on_release(event, canvas, locked, original_colors, current_colors):
     """Siirtää palikoita riippuen hiiren painalluksen vapautuksen kohdasta"""
      
     if canvas.selected:
@@ -100,7 +100,7 @@ def on_release(event, canvas, locked):
             else:
                 move_under_piece(canvas, canvas.selected)
 
-    game_complete()
+    game_complete(original_colors, current_colors)
 # -------------------------------------------------------------------
 def move_pieces(canvas, under_piece, selected_y):
     """Siirtää liikutetun palikan ja sen alle jäävän paikkoja"""
@@ -142,6 +142,7 @@ def move_under_piece(canvas, game_piece):
 
     canvas.moveto(game_piece, 99, original_y_coord)
 # -------------------------------------------------------------------
-def game_complete():
+def game_complete(original_colors, current_colors):
 
-    pass
+    if current_colors == original_colors:
+        pass
