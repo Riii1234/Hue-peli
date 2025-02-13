@@ -3,8 +3,8 @@ from tkinter import ttk
 # -------------------------------------------------------------------
 def create_frame(root):
     """Luo framen ja reunukset"""
-    # Luo frame widgetin (padding = (left, top, right, bottom), jottei muut framet näy alta)
-    frame = ttk.Frame(root, width=400, height=400, style = "blue.TFrame", padding = f"100 100 100 100")
+    # Luo frame widgetin
+    frame = ttk.Frame(root, width=600, height=600, style = "blue.TFrame")
     frame.grid(column = 0, row = 0)
 
     # Makes the frame expand to fill any extra space if the window is resized
@@ -33,3 +33,123 @@ def create_entry(frame, teksti_muuttuja, pystyrivi, vaakarivi, x_left, x_right, 
     entry.grid(column = pystyrivi, row = vaakarivi, columnspan = 1, padx = [x_left, x_right], pady = [y_up, y_down])
     return entry
 # -------------------------------------------------------------------
+def on_click(event, canvas):
+    """Hiirtä klikkaamalla valitsee kohdalla olevan palasen"""
+
+    selected = canvas.find_overlapping(event.x, event.y, event.x, event.y)
+    if selected:
+        canvas.selected = selected[-1]  # select the top-most item
+        canvas.tag_raise(canvas.selected)
+        canvas.startxy = (event.x, event.y)
+        print("selected, canvas.selected, canvas.startxy")
+        print(selected, canvas.selected, canvas.startxy)
+        global original_y_coord
+        original_y_coord = event.y
+    else:
+        canvas.selected = None
+# -------------------------------------------------------------------
+def on_drag(event, canvas, locked):
+    """Liikuttaa valittua palikkaa"""
+
+    if canvas.selected:
+        if canvas.selected not in locked:
+            # calculate distance moved from last position
+            dx, dy = event.x-canvas.startxy[0], event.y-canvas.startxy[1]
+            # move the selected item
+            canvas.move(canvas.selected, dx, dy)
+
+            # update last position
+            canvas.startxy = (event.x, event.y)
+# -------------------------------------------------------------------
+def on_release(event, canvas, locked):
+    """Siirtää palikoita riippuen hiiren painalluksen vapautuksen kohdasta"""
+     
+    if canvas.selected:
+        if canvas.selected not in locked:
+            pieces_on_place = canvas.find_overlapping(event.x, event.y, event.x, event.y)
+            print("pieces_on_place", pieces_on_place)
+            piece_under = pieces_on_place[0]
+            print("piece_under", piece_under)
+            if event.y > 79 and event.y < 120:
+                move_pieces(canvas, piece_under, 79)
+
+            elif event.y > 119 and event.y < 160:
+                move_pieces(canvas, piece_under, 119)
+
+            elif event.y > 159 and event.y < 200:
+                move_pieces(canvas, piece_under, 159)
+
+            elif event.y > 199 and event.y < 240:
+                move_pieces(canvas, piece_under, 199)
+
+            elif event.y > 239 and event.y < 280:
+                move_pieces(canvas, piece_under, 239)
+
+            elif event.y > 279 and event.y < 320:
+                move_pieces(canvas, piece_under, 279)
+
+            elif event.y > 319 and event.y < 360:
+                move_pieces(canvas, piece_under, 319)
+
+            elif event.y > 359 and event.y < 400:
+                move_pieces(canvas, piece_under, 359)
+
+            elif event.y > 399 and event.y < 440:
+                move_pieces(canvas, piece_under, 399)
+
+            else:
+                move_under_piece(canvas, canvas.selected)
+# -------------------------------------------------------------------
+def move_pieces(canvas, under_piece, selected_y):
+    """Siirtää liikutetun palikan ja sen alle jäävän paikkoja"""
+
+    canvas.moveto(canvas.selected, 99, selected_y)
+    move_under_piece(canvas, under_piece)
+# -------------------------------------------------------------------
+def move_under_piece(canvas, game_piece):
+    """Siirtää liikutetun palikan alle jäävän palikan"""
+
+    global original_y_coord
+
+    if original_y_coord > 79 and original_y_coord < 120:
+        original_y_coord = 79
+
+    elif original_y_coord > 119 and original_y_coord < 160:
+        original_y_coord = 119
+
+    elif original_y_coord > 159 and original_y_coord < 200:
+        original_y_coord = 159
+
+    elif original_y_coord > 199 and original_y_coord < 240:
+        original_y_coord = 199
+
+    elif original_y_coord > 239 and original_y_coord < 280:
+        original_y_coord = 239
+
+    elif original_y_coord > 279 and original_y_coord < 320:
+        original_y_coord = 279
+
+    elif original_y_coord > 319 and original_y_coord < 360:
+        original_y_coord = 319
+
+    elif original_y_coord > 359 and original_y_coord < 400:
+        original_y_coord = 359
+
+    elif original_y_coord > 399 and original_y_coord < 440:
+        original_y_coord = 399
+
+    canvas.moveto(game_piece, 99, original_y_coord)
+# -------------------------------------------------------------------
+# x1, y1, x2, y2
+# y1 += 40, y2 += 40
+
+# rectangle2 100, 80, 400, 120
+# rectangle3 100, 120, 400, 160
+# rectangle4 100, 160, 400, 200
+# rectangle5 100, 200, 400, 240
+# rectangle6 100, 240, 400, 280
+
+# rectangle7 100, 280, 400, 320
+# rectangle8 100, 320, 400, 360
+# rectangle9 100, 360, 400, 400
+# rectangle10 100, 400, 400, 420
