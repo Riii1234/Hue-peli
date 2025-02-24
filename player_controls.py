@@ -272,6 +272,8 @@ os.system("cls")
 #game_start()
 #test
 player_list = player_data_loader()
-player_data_writer(player_list)
+#player_data_writer(player_list)
 
-score_comparison("SAM","1.1",21)
+#score_comparison("SAM","1.1",21)
+
+to_hue(player_list)

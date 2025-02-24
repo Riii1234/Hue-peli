@@ -26,7 +26,7 @@ def create_level_easy_1(canvas, colors_dict):
     dot1 = canvas.create_oval(248, 58, 252, 62, tags = "point", fill = "black")
     dot2 = canvas.create_oval(248, 458, 252, 462, tags = "point", fill = "black")
 
-    # Palauttaa listassa lukossa olevat
+    # Palauttaa tuplessa lukossa olevat ja väri-listat
     return ([1, 11, 12, 13], original_colors, shuffled_colors)
 # -------------------------------------------------------------------
               

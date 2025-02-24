@@ -33,19 +33,26 @@ def create_entry(frame, teksti_muuttuja, pystyrivi, vaakarivi, x_left, x_right, 
     entry.grid(column = pystyrivi, row = vaakarivi, columnspan = 1, padx = [x_left, x_right], pady = [y_up, y_down])
     return entry
 # -------------------------------------------------------------------
-def on_click(event, canvas):
+def create_combobox(frame, teksti_muuttuja, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down):
+
+    combobox = ttk.Combobox(frame, textvariable = teksti_muuttuja, state = "readonly", width = 20, style = "bw.TCombobox")
+    combobox.grid(column = pystyrivi, row = vaakarivi, columnspan = 1, padx = [x_left, x_right], pady = [y_up, y_down])
+    return combobox
+# -------------------------------------------------------------------
+def on_click(event, canvas, locked):
     """Hiirtä klikkaamalla valitsee kohdalla olevan palasen"""
 
     selected = canvas.find_overlapping(event.x, event.y, event.x, event.y)
     if selected:
         canvas.selected = selected[-1]
-        # Moves the selected piece to the top layer
-        canvas.tag_raise(canvas.selected)
-        canvas.startxy = (event.x, event.y)
-        #print(selected, canvas.selected, canvas.startxy)
+        if canvas.selected not in locked:
+            # Moves the selected piece to the top layer
+            canvas.tag_raise(canvas.selected)
+            canvas.startxy = (event.x, event.y)
+            #print(selected, canvas.selected, canvas.startxy)
 
-        global original_y_coord
-        original_y_coord = event.y
+            global original_y_coord
+            original_y_coord = event.y
     else:
         canvas.selected = None
 # -------------------------------------------------------------------
