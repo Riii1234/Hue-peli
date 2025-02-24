@@ -68,4 +68,4 @@ def run():
     shuffled_colours = shuffle_list(colour_list,lock_list)
     print(shuffled_colours)
 
-run()
+#run()

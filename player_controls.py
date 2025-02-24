@@ -274,6 +274,6 @@ os.system("cls")
 player_list = player_data_loader()
 #player_data_writer(player_list)
 
-#score_comparison("SAM","1.1",21)
+#score_comparison("BOB","1.1",21)
 
-to_hue(player_list)
+#to_hue(player_list)

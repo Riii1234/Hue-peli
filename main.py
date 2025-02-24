@@ -44,10 +44,13 @@ def start_terminal():
     style.configure("bw.TEntry", foreground = "white", fieldbackground = "#000066", \
                     insertcolor = "white", font = ("Helvetica", 10))
     
+    style.configure("bw.TCombobox", foreground = "#000066", font = ("Helvetica", 10))
+    
     return root
 # -------------------------------------------------------------------
 from layout import create_start
 original_y_coord = 0
+moves_done = 0
 
 # Käynnistetään terminaali
 root = start_terminal()
