@@ -108,7 +108,7 @@ def create_level_frame(root, starting_frame, current_player_name):
     if len(chosen_name) == 3:
         """Luo level-välilehden ja sen sisällön"""
         level_frame = create_frame(root)
-        level_frame.tkraise()
+        change_frame(level_frame, starting_frame)
 
         create_label(level_frame, "Easy", "white.TLabel", 2, 3, 1, 1, 10, 5)
         create_levels(level_frame, root, starting_frame, chosen_name, "Easy", 1, 4)
@@ -122,24 +122,24 @@ def create_level_frame(root, starting_frame, current_player_name):
 def create_levels(level_frame, root, starting_frame, chosen_name, difficulty, pystyrivi, vaakarivi):
     """Luo nappulat leveleille, eivät ole loopissa, koska se ei anna numeroinnin toimia"""
     
-    create_button(level_frame, "1", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 1", chosen_name), \
+    create_button(level_frame, "1", "bw2.TButton", lambda:start_level(root, starting_frame, level_frame, f"{difficulty} 1", chosen_name), \
                   pystyrivi, vaakarivi, 1, 1, 1, 1)
-    create_button(level_frame, "2", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 2", chosen_name), \
+    create_button(level_frame, "2", "bw2.TButton", lambda:start_level(root, starting_frame, level_frame, f"{difficulty} 2", chosen_name), \
                   pystyrivi+1, vaakarivi, 1, 1, 1, 1)
-    create_button(level_frame, "3", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 3", chosen_name), \
+    create_button(level_frame, "3", "bw2.TButton", lambda:start_level(root, starting_frame, level_frame, f"{difficulty} 3", chosen_name), \
                   pystyrivi+2, vaakarivi, 1, 1, 1, 1)
-    create_button(level_frame, "4", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 4", chosen_name), \
+    create_button(level_frame, "4", "bw2.TButton", lambda:start_level(root, starting_frame, level_frame, f"{difficulty} 4", chosen_name), \
                   pystyrivi+3, vaakarivi, 1, 1, 1, 1)
-    create_button(level_frame, "5", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 5", chosen_name), \
+    create_button(level_frame, "5", "bw2.TButton", lambda:start_level(root, starting_frame, level_frame, f"{difficulty} 5", chosen_name), \
                   pystyrivi+4, vaakarivi, 1, 1, 1, 1)
-    create_button(level_frame, "6", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 6", chosen_name), \
+    create_button(level_frame, "6", "bw2.TButton", lambda:start_level(root, starting_frame, level_frame, f"{difficulty} 6", chosen_name), \
                   pystyrivi+5, vaakarivi, 1, 1, 1, 1)
 # -------------------------------------------------------------------
-def start_level(root, starting_frame, level_name, chosen_name):
+def start_level(root, starting_frame, level_frame, level_name, chosen_name):
     """Luo game-välilehden ja sen sisällön"""
 
     game_frame = create_frame(root)
-    game_frame.tkraise()
+    change_frame(game_frame, level_frame)
 
     # create_label(frame, teksti, tyyli, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down)
     create_label(game_frame, f"Level {level_name}", "white.TLabel", 0, 1, 1, 1, 5, 40)
@@ -172,21 +172,21 @@ def start_level(root, starting_frame, level_name, chosen_name):
     # Bindataan hiiren painallus, vetäminen ja irti-päästäminen eventteihin
     canvas.bind("<Button-1>", lambda event:on_click(event, canvas, locked))
     canvas.bind("<B1-Motion>", lambda event:on_drag(event, canvas, locked))
-    canvas.bind("<ButtonRelease-1>", lambda event:on_release(event, root, starting_frame, canvas, locked, level_name, \
+    canvas.bind("<ButtonRelease-1>", lambda event:on_release(event, root, starting_frame, game_frame, level_frame, canvas, locked, level_name, \
                                                              original_colors, shuffled_colors, ori_shuffled_colors, chosen_name))
 # -------------------------------------------------------------------
-def game_complete(root, starting_frame, original_colors, current_colors, level_number, chosen_name):
+def game_complete(root, starting_frame, game_frame, level_frame, original_colors, current_colors, level_number, chosen_name):
 
     #print("original_colors", original_colors)
     
     if current_colors == original_colors:
         print("Level complete!")
-        create_game_complete_frame(root, starting_frame, level_number, chosen_name)
+        create_game_complete_frame(root, starting_frame, game_frame, level_frame, level_number, chosen_name)
 
 # -------------------------------------------------------------------
-def create_game_complete_frame(root, starting_frame, level_name, chosen_name):
+def create_game_complete_frame(root, starting_frame, game_frame, level_frame, level_name, chosen_name):
 
-    game_complete_frame = ttk.Frame(root, width=200, height=200, style = "blue.TFrame")
+    game_complete_frame = ttk.Frame(root, width=200, height=200, style = "blue2.TFrame")
     game_complete_frame.grid(column = 0, row = 0)
 
     game_complete_frame.tkraise()
@@ -194,7 +194,7 @@ def create_game_complete_frame(root, starting_frame, level_name, chosen_name):
     # create_label(frame, teksti, tyyli, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down)
     create_label(game_complete_frame, f"Level complete!", "white.TLabel", 0, 1, 10, 10, 10, 20)
 
-    create_label(game_complete_frame, f"You took {globals.moves_done} moves!", "white.TLabel", 0, 2, 10, 10, 10, 20)
+    #create_label(game_complete_frame, f"You took {globals.moves_done} moves!", "white.TLabel", 0, 2, 10, 10, 10, 20)
 
     if level_name[:-2] == "Easy":
         level = "1." + level_name[-1]
@@ -223,10 +223,23 @@ def create_game_complete_frame(root, starting_frame, level_name, chosen_name):
 
         print("next_level", next_level)
 
-        create_button(game_complete_frame, "Next level", "bw2.TButton", lambda:start_level(root, starting_frame, next_level, chosen_name), \
+        create_button(game_complete_frame, "Next level", "bw2.TButton", lambda:start_level(root, starting_frame, level_frame, next_level, chosen_name), \
                   0, 7, 1, 1, 1, 1)
 
-        create_button(game_complete_frame, "Go to Main", "bw2.TButton", lambda:starting_frame.tkraise(), \
+        create_button(game_complete_frame, "Go to Main", "bw2.TButton", lambda:go_back_to_start(starting_frame, game_frame, game_complete_frame), \
                   0, 8, 1, 1, 1, 10)
 
+# -------------------------------------------------------------------
+def go_back_to_start(starting_frame, game_frame, game_complete_frame):
+    """Vaihtaa välilehteä ja menee takaisin alkuun"""
+
+    game_complete_frame.grid_forget()
+
+    change_frame(starting_frame, game_frame)
+# -------------------------------------------------------------------
+def change_frame(open_frame, close_frame):
+    """Vaihtaa välilehteä"""
+
+    close_frame.grid_forget()
+    open_frame.grid()
 # -------------------------------------------------------------------

@@ -90,7 +90,7 @@ def on_drag(event, canvas, locked):
             # Update last position
             canvas.startxy = (event.x, event.y)
 # -------------------------------------------------------------------
-def on_release(event, root, starting_frame, canvas, locked, level_number, original_colors, level_colors, ori_level_colors, chosen_name):
+def on_release(event, root, starting_frame, game_frame, level_frame, canvas, locked, level_number, original_colors, level_colors, ori_level_colors, chosen_name):
     """Siirtää palikoita riippuen hiiren painalluksen vapautuksen kohdasta"""
      
     if canvas.selected:
@@ -129,7 +129,7 @@ def on_release(event, root, starting_frame, canvas, locked, level_number, origin
                 move_under_piece(canvas, canvas.selected)
 
     from layout import game_complete
-    game_complete(root, starting_frame, original_colors, level_colors, level_number, chosen_name)
+    game_complete(root, starting_frame, game_frame, level_frame, original_colors, level_colors, level_number, chosen_name)
 # -------------------------------------------------------------------
 def move_pieces(canvas, under_piece, selected_y, level_colors, ori_level_colors):
     """Siirtää liikutetun palikan ja sen alle jäävän paikkoja"""
@@ -167,7 +167,7 @@ def move_pieces(canvas, under_piece, selected_y, level_colors, ori_level_colors)
     if level_colors != temp_level_colors:
 
         globals.moves_done += 1
-        print("moves_done", globals.moves_done)
+        #print("moves_done", globals.moves_done)
 
     move_under_piece(canvas, under_piece)
 # -------------------------------------------------------------------
