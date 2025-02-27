@@ -1,5 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
+
+import globals
+from globals import original_y_coord
 # -------------------------------------------------------------------
 def create_frame(root):
     """Luo framen ja reunukset"""
@@ -59,7 +62,6 @@ def on_click(event, canvas, locked):
             canvas.tag_raise(canvas.selected)
             canvas.startxy = (event.x, event.y)
             #print(selected, canvas.selected, canvas.startxy)
-
             global original_y_coord
             original_y_coord = event.y
     else:
@@ -122,8 +124,6 @@ def on_release(event, root, starting_frame, canvas, locked, level_number, origin
 def move_pieces(canvas, under_piece, selected_y, level_colors, ori_level_colors):
     """Siirtää liikutetun palikan ja sen alle jäävän paikkoja"""
 
-    global moves_done
-
     # Palikoiden liikuttamisen laskemista varten väliaikainen lista
     temp_level_colors = []
     for color in level_colors:
@@ -155,9 +155,9 @@ def move_pieces(canvas, under_piece, selected_y, level_colors, ori_level_colors)
     #print("ori_level_colors", ori_level_colors)
 
     if level_colors != temp_level_colors:
-        
-        moves_done += 1
-        print("moves_done", moves_done)
+
+        globals.moves_done += 1
+        print("moves_done", globals.moves_done)
 
     move_under_piece(canvas, under_piece)
 # -------------------------------------------------------------------

@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
+import globals
 # -------------------------------------------------------------------
+from color_dict import colors_dict
 from layout_common_functions import create_frame, create_label, create_entry, create_button, create_combobox, \
     on_click, on_drag, on_release, set_combobox
 from levels import *
@@ -15,7 +17,7 @@ def create_start(root):
 
     # Aloitus-frame (mikä näkyy käynnistettäessä)
     starting_frame.tkraise()
-    
+
     # Ohjelman aloitus
     root.mainloop()
 # -------------------------------------------------------------------
@@ -117,7 +119,8 @@ def start_level(root, starting_frame, level_name):
     canvas = tk.Canvas(game_frame, height = 500, width = 490, highlightthickness = 1, bg = "#000066")
     canvas.grid(column = 0, row = 2, columnspan = 10, rowspan = 10, padx = [1, 1], pady = [1, 1])
 
-    from color_dict import colors_dict
+    globals.moves_done = 0
+    #print("moves_done reset in start_level:", globals.moves_done)
 
     if level_name == "Easy 1":
         locked, original_colors, shuffled_colors, ori_shuffled_colors = create_level_easy_1(canvas, colors_dict)
@@ -162,8 +165,7 @@ def create_game_complete_frame(root, starting_frame, level_name):
     # create_label(frame, teksti, tyyli, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down)
     create_label(game_complete_frame, f"Level complete!", "white.TLabel", 0, 1, 10, 10, 10, 20)
 
-    #global moves_done
-    #create_label(game_complete_frame, f"You took {moves_done} moves!", "white.TLabel", 0, 2, 10, 10, 10, 20)
+    create_label(game_complete_frame, f"You took {globals.moves_done} moves!", "white.TLabel", 0, 2, 10, 10, 10, 20)
 
     # Jos ei ole viimeinen level
     if level_name != "Hard 6":

@@ -48,11 +48,10 @@ def start_terminal():
     
     return root
 # -------------------------------------------------------------------
-from layout import create_start
-original_y_coord = 0
-moves_done = 0
-
 # Käynnistetään terminaali
 root = start_terminal()
+
+from layout import create_start
+
 create_start(root)
 
