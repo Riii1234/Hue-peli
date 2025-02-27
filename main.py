@@ -35,6 +35,7 @@ def start_terminal():
     style.configure("white2.TLabel", foreground = "white", background = "#000066", font = ("Helvetica", 30))
     
     style.configure("blue.TFrame", background = "#000066")
+    style.configure("blue2.TFrame", background = "#000066", borderwidth = 1, relief="raised")
 
     style.configure("bw.TButton", foreground = "white", background = "#000066", borderwidth = 3, \
                     relief="raised", font = ("Helvetica", 11))

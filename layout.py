@@ -6,6 +6,7 @@ from color_dict import colors_dict
 from layout_common_functions import create_frame, create_label, create_entry, create_button, create_combobox, \
     on_click, on_drag, on_release, set_combobox
 from levels import *
+import player_controls
 # -------------------------------------------------------------------
 def create_start(root):
     """Luo starting-välilehden ja nostaa sen esille"""
@@ -39,15 +40,15 @@ def create_starting_frame(starting_frame, root):
 
     # (frame, teksti, funktio (joka tapahtuu nappulasta) lambda-muodossa, jottei se tapahdu koko ajan, 
     # pystyrivi, vaakarivi, x_left, x_right, y_up, y_down)
-    create_button(starting_frame, "Create New User", "bw.TButton", lambda:create_user(), 1, 4, 1, 1, 1, 10)
-    create_button(starting_frame, "Delete User", "bw.TButton", lambda:delete_user(), 1, 6, 1, 1, 1, 10)
+    create_button(starting_frame, "Create New User", "bw.TButton", lambda:create_user(root, player_combobox), 1, 4, 1, 1, 1, 10)
+    create_button(starting_frame, "Delete User", "bw.TButton", lambda:delete_user(root, player_combobox), 1, 6, 1, 1, 1, 10)
 
-    create_button(starting_frame, "Start Game", "bw.TButton", lambda:create_level_frame(root, starting_frame, current_player_name), 1, 8, 1, 1, 10, 1)
+    create_button(starting_frame, "Start Game", "bw.TButton", \
+                  lambda:create_level_frame(root, starting_frame, current_player_name), 1, 8, 1, 1, 10, 1)
 # -------------------------------------------------------------------
 def set_player_combobox(player_combobox):
     """Täyttää pelaaja-nimi valikon tiedostosta"""
 
-    import player_controls
     player_infos_list = player_controls.player_data_loader()
 
     player_names = []
@@ -64,11 +65,39 @@ def get_player_name(current_player_name):
     chosen_name = current_player_name.get()
     return chosen_name
 # -------------------------------------------------------------------
-def create_user():
-    print("Created user!")
+def create_user(root, player_combobox):
+    """Luo välilehden uuden pelaajan lisäämiselle"""
+
+    player_creation_frame = ttk.Frame(root, width=200, height=200, style = "blue2.TFrame")
+    player_creation_frame.grid(column = 0, row = 0)
+
+    player_creation_frame.tkraise()
+
+    # create_label(frame, teksti, tyyli, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down)
+    create_label(player_creation_frame, f"Create username (3 letters)", "white.TLabel", 0, 1, 10, 10, 100, 5)
+
+    name_variable = tk.StringVar()
+    name_entry = create_entry(player_creation_frame, name_variable, 0, 2, 10, 10, 5, 20)
+
+    create_button(player_creation_frame, "Accept", "bw.TButton", \
+                  lambda:player_controls.player_creation(player_creation_frame, name_variable, player_combobox), 0, 3, 1, 1, 10, 100)
 # -------------------------------------------------------------------
-def delete_user():
-    pass
+def delete_user(root, player_combobox):
+    """Luo välilehden uuden pelaajan poistamiseksi"""
+
+    player_delete_frame = ttk.Frame(root, width=200, height=200, style = "blue2.TFrame")
+    player_delete_frame.grid(column = 0, row = 0)
+
+    player_delete_frame.tkraise()
+
+    # create_label(frame, teksti, tyyli, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down)
+    create_label(player_delete_frame, f"Delete username (3 letters)", "white.TLabel", 0, 1, 10, 10, 100, 5)
+
+    name_variable = tk.StringVar()
+    name_entry = create_entry(player_delete_frame, name_variable, 0, 2, 10, 10, 5, 20)
+
+    create_button(player_delete_frame, "Accept", "bw.TButton", \
+                  lambda:player_controls.player_deletion(player_delete_frame, name_variable, player_combobox), 0, 3, 1, 1, 10, 100)
 # -------------------------------------------------------------------
 def create_level_frame(root, starting_frame, current_player_name):
     """Luo kentän valinta-välilehden"""
@@ -82,31 +111,31 @@ def create_level_frame(root, starting_frame, current_player_name):
         level_frame.tkraise()
 
         create_label(level_frame, "Easy", "white.TLabel", 2, 3, 1, 1, 10, 5)
-        create_levels(level_frame, root, starting_frame, "Easy", 1, 4)
+        create_levels(level_frame, root, starting_frame, chosen_name, "Easy", 1, 4)
 
         create_label(level_frame, "Medium", "white.TLabel", 2, 6, 1, 1, 10, 5)
-        create_levels(level_frame, root, starting_frame, "Medium", 1, 7)
+        create_levels(level_frame, root, starting_frame, chosen_name, "Medium", 1, 7)
 
         create_label(level_frame, "Hard", "white.TLabel", 2, 9, 1, 1, 10, 5)
-        create_levels(level_frame, root, starting_frame, "Hard", 1, 10)
+        create_levels(level_frame, root, starting_frame, chosen_name, "Hard", 1, 10)
 # -------------------------------------------------------------------
-def create_levels(level_frame, root, starting_frame, difficulty, pystyrivi, vaakarivi):
+def create_levels(level_frame, root, starting_frame, chosen_name, difficulty, pystyrivi, vaakarivi):
     """Luo nappulat leveleille, eivät ole loopissa, koska se ei anna numeroinnin toimia"""
     
-    create_button(level_frame, "1", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 1"), \
+    create_button(level_frame, "1", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 1", chosen_name), \
                   pystyrivi, vaakarivi, 1, 1, 1, 1)
-    create_button(level_frame, "2", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 2"), \
+    create_button(level_frame, "2", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 2", chosen_name), \
                   pystyrivi+1, vaakarivi, 1, 1, 1, 1)
-    create_button(level_frame, "3", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 3"), \
+    create_button(level_frame, "3", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 3", chosen_name), \
                   pystyrivi+2, vaakarivi, 1, 1, 1, 1)
-    create_button(level_frame, "4", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 4"), \
+    create_button(level_frame, "4", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 4", chosen_name), \
                   pystyrivi+3, vaakarivi, 1, 1, 1, 1)
-    create_button(level_frame, "5", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 5"), \
+    create_button(level_frame, "5", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 5", chosen_name), \
                   pystyrivi+4, vaakarivi, 1, 1, 1, 1)
-    create_button(level_frame, "6", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 6"), \
+    create_button(level_frame, "6", "bw2.TButton", lambda:start_level(root, starting_frame, f"{difficulty} 6", chosen_name), \
                   pystyrivi+5, vaakarivi, 1, 1, 1, 1)
 # -------------------------------------------------------------------
-def start_level(root, starting_frame, level_name):
+def start_level(root, starting_frame, level_name, chosen_name):
     """Luo game-välilehden ja sen sisällön"""
 
     game_frame = create_frame(root)
@@ -144,18 +173,18 @@ def start_level(root, starting_frame, level_name):
     canvas.bind("<Button-1>", lambda event:on_click(event, canvas, locked))
     canvas.bind("<B1-Motion>", lambda event:on_drag(event, canvas, locked))
     canvas.bind("<ButtonRelease-1>", lambda event:on_release(event, root, starting_frame, canvas, locked, level_name, \
-                                                             original_colors, shuffled_colors, ori_shuffled_colors))
+                                                             original_colors, shuffled_colors, ori_shuffled_colors, chosen_name))
 # -------------------------------------------------------------------
-def game_complete(root, starting_frame, original_colors, current_colors, level_number):
+def game_complete(root, starting_frame, original_colors, current_colors, level_number, chosen_name):
 
     #print("original_colors", original_colors)
     
     if current_colors == original_colors:
         print("Level complete!")
-        create_game_complete_frame(root, starting_frame, level_number)
+        create_game_complete_frame(root, starting_frame, level_number, chosen_name)
 
 # -------------------------------------------------------------------
-def create_game_complete_frame(root, starting_frame, level_name):
+def create_game_complete_frame(root, starting_frame, level_name, chosen_name):
 
     game_complete_frame = ttk.Frame(root, width=200, height=200, style = "blue.TFrame")
     game_complete_frame.grid(column = 0, row = 0)
@@ -166,6 +195,17 @@ def create_game_complete_frame(root, starting_frame, level_name):
     create_label(game_complete_frame, f"Level complete!", "white.TLabel", 0, 1, 10, 10, 10, 20)
 
     create_label(game_complete_frame, f"You took {globals.moves_done} moves!", "white.TLabel", 0, 2, 10, 10, 10, 20)
+
+    if level_name[:-2] == "Easy":
+        level = "1." + level_name[-1]
+
+    elif level_name[:-2] == "Medium":
+        level = "2." + level_name[-1]
+
+    elif level_name[:-2] == "Hard":
+        level = "3." + level_name[-1]
+
+    player_controls.score_comparison(chosen_name, level, globals.moves_done, game_complete_frame)
 
     # Jos ei ole viimeinen level
     if level_name != "Hard 6":
@@ -183,10 +223,10 @@ def create_game_complete_frame(root, starting_frame, level_name):
 
         print("next_level", next_level)
 
-        create_button(game_complete_frame, "Next level", "bw2.TButton", lambda:start_level(root, starting_frame, next_level), \
-                  0, 3, 1, 1, 1, 1)
+        create_button(game_complete_frame, "Next level", "bw2.TButton", lambda:start_level(root, starting_frame, next_level, chosen_name), \
+                  0, 7, 1, 1, 1, 1)
 
         create_button(game_complete_frame, "Go to Main", "bw2.TButton", lambda:starting_frame.tkraise(), \
-                  0, 4, 1, 1, 1, 10)
+                  0, 8, 1, 1, 1, 10)
 
 # -------------------------------------------------------------------

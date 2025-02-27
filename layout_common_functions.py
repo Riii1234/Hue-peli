@@ -32,7 +32,7 @@ def create_button(frame, teksti, tyyli, funktio, pystyrivi, vaakarivi, x_left, x
 def create_entry(frame, teksti_muuttuja, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down):
     """Luo entry-kirjoituspalkin ja asettaa sen frameen"""
 
-    entry = ttk.Entry(frame, textvariable = teksti_muuttuja, width = 20, style = "bw.TEntry")
+    entry = ttk.Entry(frame, textvariable = teksti_muuttuja, width = 3, style = "bw.TEntry")
     entry.grid(column = pystyrivi, row = vaakarivi, columnspan = 1, padx = [x_left, x_right], pady = [y_up, y_down])
     return entry
 # -------------------------------------------------------------------
@@ -48,8 +48,18 @@ def set_combobox(combobox, info_list):
 
     # Sijoitetaan tiedot valikkoon
     combobox.configure(values = info_list)
-    # Asetetaan ensimmäinen nimi näkyville valikkoon
-    combobox.set(info_list[0])
+    # Asetetaan uusim nimi näkyville valikkoon
+    combobox.set(info_list[-1])
+# -------------------------------------------------------------------
+def delete_from_combobox(combobox, deleted_item):
+    """Poistaa yhden tiedon comboboxista"""
+
+    options = list(combobox['values'])
+    print("options, deleted_item", options, deleted_item)
+    options.remove(deleted_item)
+
+    combobox['values'] = options
+    combobox.set(options[-1])
 # -------------------------------------------------------------------
 def on_click(event, canvas, locked):
     """Hiirtä klikkaamalla valitsee kohdalla olevan palasen"""
@@ -80,7 +90,7 @@ def on_drag(event, canvas, locked):
             # Update last position
             canvas.startxy = (event.x, event.y)
 # -------------------------------------------------------------------
-def on_release(event, root, starting_frame, canvas, locked, level_number, original_colors, level_colors, ori_level_colors):
+def on_release(event, root, starting_frame, canvas, locked, level_number, original_colors, level_colors, ori_level_colors, chosen_name):
     """Siirtää palikoita riippuen hiiren painalluksen vapautuksen kohdasta"""
      
     if canvas.selected:
@@ -119,7 +129,7 @@ def on_release(event, root, starting_frame, canvas, locked, level_number, origin
                 move_under_piece(canvas, canvas.selected)
 
     from layout import game_complete
-    game_complete(root, starting_frame, original_colors, level_colors, level_number)
+    game_complete(root, starting_frame, original_colors, level_colors, level_number, chosen_name)
 # -------------------------------------------------------------------
 def move_pieces(canvas, under_piece, selected_y, level_colors, ori_level_colors):
     """Siirtää liikutetun palikan ja sen alle jäävän paikkoja"""

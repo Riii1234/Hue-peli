@@ -1,6 +1,11 @@
 import csv
 import os
 
+import tkinter as tk
+from tkinter import ttk
+import globals
+import layout_common_functions
+
 #loading player data
 def player_data_loader():
     """compiles players into a list from the csv file"""
@@ -104,31 +109,38 @@ def player_selection():
     to_hue(user)
 
 #creates a user for yourself
-def player_creation():
+def player_creation(player_creation_frame, name_variable, player_combobox):
     """Helps create a three letter username for yourself, all other data is predefined"""
     player_list = player_data_loader()
     alphabet = "ABCDEFGHIJKLMNOPQRSTYVWXYZÅÄÖ"
-    print("Create your username, three letters from AAA-ÖÖÖ\n")
+    #print("Create your username, three letters from AAA-ÖÖÖ\n")
+
+    # Hakee nimen teksti-kentästä
+    name = name_variable.get()
     
     while True:
-        name = input("Name: ")
+
+        #print("name", name)
         name = name.upper()
-        if name == "BACK":
-            print()
-            return
+
+        #if name == "BACK":
+            #print()
+            #return
         #length check
-        if len(name) != 3:
-            print("\nYour username isn't three characters long\n")
-            continue
-        name = name.upper()
+        #if len(name) != 3:
+            #print("\nYour username isn't three characters long\n")
+            #continue
+
         #wrong character check
         invalid_characters = False
         for letter in name:
             if letter not in alphabet:
                 invalid_characters = True
         if invalid_characters == True:
-            print("\nYour username contains something it shouldn't\n")
-            continue
+            layout_common_functions.create_label(player_creation_frame, \
+                    "Invalid username!", "white.TLabel", 0, 4, 10, 10, 10, 20)
+            #print("\nYour username contains something it shouldn't\n")
+            break
         #pre-existing check:
         duplicate_name = False
         for dictionary in player_list:
@@ -136,45 +148,70 @@ def player_creation():
                 duplicate_name = True
                 break
         if duplicate_name == True:
-            print("\nThat username already exists\n")
-            continue
+            layout_common_functions.create_label(player_creation_frame, \
+                    "Username already in use!", "white.TLabel", 0, 4, 10, 10, 10, 20)
+            #print("\nThat username already exists\n")
+            break
         #confirmation
-        print(f"\nIs {name} the username you want to go with?\n\n(1) Yes\n(2) No\n")
-        done = True
-        while True:
-            confirmation = input("Is this you?: ")
-            if confirmation == "1":
-                break
-            elif confirmation == "2":
-                print()
-                done = False
-                break
-            else:
-                print("\nWhat you entered was not very zen\n")
-        if done == False:
-            continue
+        #print(f"\nIs {name} the username you want to go with?\n\n(1) Yes\n(2) No\n")
+        #done = True
+        #while True:
+            #confirmation = input("Is this you?: ")
+            #if confirmation == "1":
+                #break
+            #elif confirmation == "2":
+                #print()
+                #done = False
+                #break
+            #else:
+                #print("\nWhat you entered was not very zen\n")
+        #if done == False:
+            #continue
         #new player dict creation
         new_player = {}
         new_player["username"] = name
-        new_player["incomplete_levels"] = ['1.1', '1.2', '1.3', '2.1', '2.2', '2.3', '3.1', '3.2', '3.3']
+        new_player["incomplete_levels"] = ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '2.1', '2.2', '2.3', '3.1', '3.2', '3.3']
         new_player["complete_levels_best"] = {}
         player_list.append(new_player)
         player_data_writer(player_list)
-        break
-    print()
-    to_hue(new_player)
+        #break
+        print()
+        to_hue(new_player)
+        layout_common_functions.create_label(player_creation_frame, \
+                    "Username created!", "white.TLabel", 0, 4, 10, 10, 10, 20)
+
+        # Sulkee pelaaja-nimen luonnin välilehden
+        player_creation_frame.grid_forget()
+
+        from layout import set_player_combobox
+        # Asettaa nimet uudelleen valikkoon, jotta uusikin nimi näkyy siinä
+        set_player_combobox(player_combobox)
+
 
 #deletes a user
-def player_deletion():
+def player_deletion(player_delete_frame, name_variable, player_combobox):
     """Helps you delete a player and then goes back to game_start"""
     player_list = player_data_loader()
+    alphabet = "ABCDEFGHIJKLMNOPQRSTYVWXYZÅÄÖ"
     
     while True:
-        tag = input("Enter the username for deletion: ")
+        tag = name_variable.get()
+        #tag = input("Enter the username for deletion: ")
         tag = tag.upper()
-        if tag == "BACK":
-            print()
-            return
+        print("tag", tag)
+        #if tag == "BACK":
+            #print()
+            #return
+
+        invalid_characters = False
+        for letter in tag:
+            if letter not in alphabet:
+                invalid_characters = True
+        if invalid_characters == True:
+            layout_common_functions.create_label(player_delete_frame, \
+                    "Invalid username!", "white.TLabel", 0, 4, 10, 10, 10, 20)
+            break
+
         copy_list = []
         deleted = False
         for data in player_list:
@@ -182,19 +219,29 @@ def player_deletion():
                 copy_list.append(data)
             else:
                 print(f"\nDeleted {tag}\n")
+                layout_common_functions.create_label(player_delete_frame, \
+                    f"Deleted {tag}", "white.TLabel", 0, 4, 10, 10, 10, 20)
                 deleted = True
         if deleted == True:
             player_data_writer(copy_list)
-            game_start()
+            # Sulkee pelaajan poistamis-välilehden
+            player_delete_frame.grid_forget()
+
+            # Poistetaan valittu tag valikosta
+            layout_common_functions.delete_from_combobox(player_combobox, tag)
+            break
         else:
             print("\nNo match was found\n")
+            layout_common_functions.create_label(player_delete_frame, \
+                    "No match was found", "white.TLabel", 0, 4, 10, 10, 10, 20)
+            break
             
 #test function
 def to_hue(player_data):
     print(player_data)
 
 #some code should be integrated in player data loading
-def score_comparison(player_tag: str, level_number: str, move_count):
+def score_comparison(player_tag: str, level_number: str, move_count, game_complete_frame):
     """logic for player moveset comparison"""
     #chooses player data based on tag and makes calculations based on scores
     #player data
@@ -228,6 +275,8 @@ def score_comparison(player_tag: str, level_number: str, move_count):
             global_level_score[dict["username"]] = dict["complete_levels_best"][level_number]
         except IndexError:
             pass
+        except KeyError:
+            pass
     global_score_list = sorted(global_level_score.items(), key=lambda item: item[1])
 
     #The rank is also based on shared positions. All same scores are put in the same rank, and the following rank is increased by x-1 where x is the amount of entries in a shared rank
@@ -248,23 +297,34 @@ def score_comparison(player_tag: str, level_number: str, move_count):
     #score countings
     print()
     if old_move_count == 0:
-        print("Your first score is your best score")
-        print(f"Score: {move_count}\n")
+        layout_common_functions.create_label(game_complete_frame, "Your first score is your best score", "white.TLabel", 0, 3, 10, 10, 10, 20)
+        #print("Your first score is your best score")
+        layout_common_functions.create_label(game_complete_frame, f"Score: {move_count}", "white.TLabel", 0, 4, 10, 10, 10, 20)
+        #print(f"Score: {move_count}\n")
     elif move_count > old_move_count:
-        print("This isn't your best score")
-        print(f"Current score: {move_count}")
-        print(f"Best score: {old_move_count}\n")
+        layout_common_functions.create_label(game_complete_frame, "This isn't your best score", "white.TLabel", 0, 3, 10, 10, 10, 20)
+        #print("This isn't your best score")
+        layout_common_functions.create_label(game_complete_frame, f"Current score: {move_count}", "white.TLabel", 0, 4, 10, 10, 10, 20)
+        #print(f"Current score: {move_count}")
+        layout_common_functions.create_label(game_complete_frame, f"Best score: {old_move_count}", "white.TLabel", 0, 5, 10, 10, 10, 20)
+        #print(f"Best score: {old_move_count}\n")
     elif move_count < old_move_count:
-        print("This is your best score")
-        print(f"New best score: {move_count}")
-        print(f"Old best score: {old_move_count}\n")
+        layout_common_functions.create_label(game_complete_frame, "This is your best score", "white.TLabel", 0, 3, 10, 10, 10, 20)
+        #print("This is your best score")
+        layout_common_functions.create_label(game_complete_frame, f"New best score: {move_count}", "white.TLabel", 0, 4, 10, 10, 10, 20)
+        #print(f"New best score: {move_count}")
+        layout_common_functions.create_label(game_complete_frame, f"Old best score: {old_move_count}", "white.TLabel", 0, 5, 10, 10, 10, 20)
+        #print(f"Old best score: {old_move_count}\n")
     elif move_count == old_move_count:
-        print("This score is tied with a previous best score")
-        print(f"Score: {move_count}\n")
-    print(f"Globally you are ranked: {rank_counter}")
+        layout_common_functions.create_label(game_complete_frame, "This score is tied with a previous best score", "white.TLabel", 0, 3, 10, 10, 10, 20)
+        #print("This score is tied with a previous best score")
+        layout_common_functions.create_label(game_complete_frame, f"Score: {move_count}", "white.TLabel", 0, 4, 10, 10, 10, 20)
+        #print(f"Score: {move_count}\n")
+    layout_common_functions.create_label(game_complete_frame, f"Globally you are ranked: {rank_counter}", "white.TLabel", 0, 6, 10, 10, 10, 20)
+    #print(f"Globally you are ranked: {rank_counter}")
 
     #IMPORTANT: below is the file writer, disabled for testings
-    #player_data_writer(new_player_list)
+    player_data_writer(new_player_list)
     
         
 
@@ -274,6 +334,6 @@ os.system("cls")
 player_list = player_data_loader()
 #player_data_writer(player_list)
 
-#score_comparison("BOB","1.1",21)
+#score_comparison("BOB", "1.1", 21)
 
 #to_hue(player_list)
