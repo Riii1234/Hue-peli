@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 import globals
-from globals import original_y_coord
+from globals import original_y_coord, original_x_coord
 # -------------------------------------------------------------------
 def create_frame(root):
     """Luo framen ja reunukset"""
@@ -74,6 +74,8 @@ def on_click(event, canvas, locked):
             #print(selected, canvas.selected, canvas.startxy)
             global original_y_coord
             original_y_coord = event.y
+            global original_x_coord
+            original_x_coord = event.x
     else:
         canvas.selected = None
 # -------------------------------------------------------------------
@@ -98,40 +100,61 @@ def on_release(event, root, starting_frame, game_frame, level_frame, canvas, loc
             pieces_on_place = canvas.find_overlapping(event.x, event.y, event.x, event.y)
             piece_under = pieces_on_place[0]
             #print("piece_under", piece_under)
-            if event.y > 79 and event.y < 120:
-                move_pieces(canvas, piece_under, 79, level_colors, ori_level_colors)
 
-            elif event.y > 119 and event.y < 160:
-                move_pieces(canvas, piece_under, 119, level_colors, ori_level_colors)
+            if level_number[:-2] == "Medium":
 
-            elif event.y > 159 and event.y < 200:
-                move_pieces(canvas, piece_under, 159, level_colors, ori_level_colors)
-
-            elif event.y > 199 and event.y < 240:
-                move_pieces(canvas, piece_under, 199, level_colors, ori_level_colors)
-
-            elif event.y > 239 and event.y < 280:
-                move_pieces(canvas, piece_under, 239, level_colors, ori_level_colors)
-
-            elif event.y > 279 and event.y < 320:
-                move_pieces(canvas, piece_under, 279, level_colors, ori_level_colors)
-
-            elif event.y > 319 and event.y < 360:
-                move_pieces(canvas, piece_under, 319, level_colors, ori_level_colors)
-
-            elif event.y > 359 and event.y < 400:
-                move_pieces(canvas, piece_under, 359, level_colors, ori_level_colors)
-
-            elif event.y > 399 and event.y < 440:
-                move_pieces(canvas, piece_under, 399, level_colors, ori_level_colors)
+                if event.x > 99 and event.x < 200:
+                    selected_x = 99
+                elif event.x > 199 and event.x < 300:
+                    selected_x = 199
+                elif event.x > 299 and event.x < 400:
+                    selected_x = 299
+                else:
+                    global original_x_coord
+                    if original_x_coord > 99 and original_x_coord < 200:
+                        selected_x = 99
+                    elif original_x_coord > 199 and original_x_coord < 300:
+                        selected_x = 199
+                    elif original_x_coord > 299 and original_x_coord < 400:
+                        selected_x = 299
 
             else:
-                move_under_piece(canvas, canvas.selected)
+                selected_x = 99
+
+            if event.y > 79 and event.y < 120:
+                move_pieces(canvas, piece_under, selected_x, 79, level_colors, ori_level_colors)
+
+            elif event.y > 119 and event.y < 160:
+                move_pieces(canvas, piece_under, selected_x, 119, level_colors, ori_level_colors)
+
+            elif event.y > 159 and event.y < 200:
+                move_pieces(canvas, piece_under, selected_x, 159, level_colors, ori_level_colors)
+
+            elif event.y > 199 and event.y < 240:
+                move_pieces(canvas, piece_under, selected_x, 199, level_colors, ori_level_colors)
+
+            elif event.y > 239 and event.y < 280:
+                move_pieces(canvas, piece_under, selected_x, 239, level_colors, ori_level_colors)
+
+            elif event.y > 279 and event.y < 320:
+                move_pieces(canvas, piece_under, selected_x, 279, level_colors, ori_level_colors)
+
+            elif event.y > 319 and event.y < 360:
+                move_pieces(canvas, piece_under, selected_x, 319, level_colors, ori_level_colors)
+
+            elif event.y > 359 and event.y < 400:
+                move_pieces(canvas, piece_under, selected_x, 359, level_colors, ori_level_colors)
+
+            elif event.y > 399 and event.y < 440:
+                move_pieces(canvas, piece_under, selected_x, 399, level_colors, ori_level_colors)
+
+            else:
+                move_under_piece(canvas, canvas.selected, selected_x)
 
     from layout import game_complete
     game_complete(root, starting_frame, game_frame, level_frame, original_colors, level_colors, level_number, chosen_name)
 # -------------------------------------------------------------------
-def move_pieces(canvas, under_piece, selected_y, level_colors, ori_level_colors):
+def move_pieces(canvas, under_piece, selected_x, selected_y, level_colors, ori_level_colors):
     """Siirtää liikutetun palikan ja sen alle jäävän paikkoja"""
 
     # Palikoiden liikuttamisen laskemista varten väliaikainen lista
@@ -139,7 +162,7 @@ def move_pieces(canvas, under_piece, selected_y, level_colors, ori_level_colors)
     for color in level_colors:
         temp_level_colors.append(color)
 
-    canvas.moveto(canvas.selected, 99, selected_y)
+    canvas.moveto(canvas.selected, selected_x, selected_y)
 
     # Mikä numero palikka alla
     #print("under_piece", under_piece)
@@ -169,9 +192,9 @@ def move_pieces(canvas, under_piece, selected_y, level_colors, ori_level_colors)
         globals.moves_done += 1
         #print("moves_done", globals.moves_done)
 
-    move_under_piece(canvas, under_piece)
+    move_under_piece(canvas, under_piece, selected_x)
 # -------------------------------------------------------------------
-def move_under_piece(canvas, game_piece):
+def move_under_piece(canvas, game_piece, selected_x):
     """Siirtää liikutetun palikan alle jäävän palikan"""
 
     global original_y_coord
@@ -203,5 +226,5 @@ def move_under_piece(canvas, game_piece):
     elif original_y_coord > 399 and original_y_coord < 440:
         original_y_coord = 399
 
-    canvas.moveto(game_piece, 99, original_y_coord)
+    canvas.moveto(game_piece, selected_x, original_y_coord)
 # -------------------------------------------------------------------

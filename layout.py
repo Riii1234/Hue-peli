@@ -169,6 +169,9 @@ def start_level(root, starting_frame, level_frame, level_name, chosen_name):
     elif level_name == "Easy 6":
         locked, original_colors, shuffled_colors, ori_shuffled_colors = create_level_easy_6(canvas, colors_dict)
 
+    elif level_name == "Medium 1":
+        locked, original_colors, shuffled_colors, ori_shuffled_colors = create_level_medium_1(canvas, colors_dict)
+
     # Bindataan hiiren painallus, vetäminen ja irti-päästäminen eventteihin
     canvas.bind("<Button-1>", lambda event:on_click(event, canvas, locked))
     canvas.bind("<B1-Motion>", lambda event:on_drag(event, canvas, locked))
