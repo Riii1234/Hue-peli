@@ -31,21 +31,28 @@ def start_terminal():
 
     # Luodaan tyylejä käytettäville widgeteille (label, frame, button, entry) 
     # Nimen (esim. "white.TLabel") jälkimmäistä osaa ei voi vaihtaa
-    style.configure("white.TLabel", foreground = "white", background = "#000066", font = ("Helvetica", 11))
-    style.configure("white2.TLabel", foreground = "white", background = "#000066", font = ("Helvetica", 30))
+    style.configure("blue.TLabel", foreground = "white", background = "#000066", font = ("Helvetica", 11))
+    style.configure("blue2.TLabel", foreground = "white", background = "#000066", font = ("Helvetica", 30))
+    style.configure("blue3.TLabel", foreground = "white", background = "#000066", font = ("Helvetica", 26))
+    style.configure("white.TLabel", foreground = "#000066", background = "white", font = ("Helvetica", 11))
     
     style.configure("blue.TFrame", background = "#000066")
-    style.configure("blue2.TFrame", background = "#000066", borderwidth = 1, relief="raised")
+    style.configure("white.TFrame", background = "white")
+    style.configure("blue2.TFrame", background = "#000066")
 
-    style.configure("bw.TButton", foreground = "white", background = "#000066", borderwidth = 3, \
+    style.configure("blue.TButton", foreground = "white", background = "#000066", borderwidth = 3, \
                     relief="raised", font = ("Helvetica", 11))
-    style.configure("bw2.TButton", foreground = "white", background = "#000066", borderwidth = 1, \
+    style.configure("blue2.TButton", foreground = "white", background = "#000066", borderwidth = 1, \
+                    relief="raised", font = ("Helvetica", 9))
+    style.configure("blue3.TButton", foreground = "white", background = "#000066", borderwidth = 1, \
+                    relief="raised", font = ("Helvetica", 17))
+    style.configure("blue4.TButton", foreground = "white", background = "#000088", borderwidth = 1, \
                     relief="raised", font = ("Helvetica", 9))
     
-    style.configure("bw.TEntry", foreground = "white", fieldbackground = "#000066", \
+    style.configure("blue.TEntry", foreground = "white", fieldbackground = "#000066", \
                     insertcolor = "white", font = ("Helvetica", 10))
     
-    style.configure("bw.TCombobox", foreground = "#000066", font = ("Helvetica", 10))
+    style.configure("blue.TCombobox", foreground = "#000066", font = ("Helvetica", 10))
     
     return root
 # -------------------------------------------------------------------

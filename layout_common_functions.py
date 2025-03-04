@@ -4,10 +4,10 @@ from tkinter import ttk
 import globals
 from globals import original_y_coord, original_x_coord
 # -------------------------------------------------------------------
-def create_frame(root):
+def create_frame(root, tyyli):
     """Luo framen ja reunukset"""
     # Luo frame widgetin
-    frame = ttk.Frame(root, width=600, height=600, style = "blue.TFrame")
+    frame = ttk.Frame(root, width=600, height=600, style = tyyli)
     frame.grid(column = 0, row = 0)
 
     # Makes the frame expand to fill any extra space if the window is resized
@@ -16,11 +16,14 @@ def create_frame(root):
 
     return frame
 # -------------------------------------------------------------------
-def create_label(frame, teksti, tyyli, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down):
+def create_label(frame, tyyli, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down):
     """Luo teksti-labelin ja asettaa sen frameen"""
+    
+    teksti_muuttuja = tk.StringVar()
 
-    ttk.Label(frame, text = teksti, style = tyyli) \
+    ttk.Label(frame, text = "", textvariable = teksti_muuttuja, style = tyyli) \
         .grid(column = pystyrivi, row = vaakarivi, columnspan = 1, padx = [x_left, x_right], pady = [y_up, y_down])
+    return teksti_muuttuja
 # -------------------------------------------------------------------
 def create_button(frame, teksti, tyyli, funktio, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down):
     """Luo buttonin ja asettaa sen frameen"""
@@ -32,14 +35,14 @@ def create_button(frame, teksti, tyyli, funktio, pystyrivi, vaakarivi, x_left, x
 def create_entry(frame, teksti_muuttuja, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down):
     """Luo entry-kirjoituspalkin ja asettaa sen frameen"""
 
-    entry = ttk.Entry(frame, textvariable = teksti_muuttuja, width = 3, style = "bw.TEntry")
+    entry = ttk.Entry(frame, textvariable = teksti_muuttuja, width = 10, style = "bw.TEntry")
     entry.grid(column = pystyrivi, row = vaakarivi, columnspan = 1, padx = [x_left, x_right], pady = [y_up, y_down])
     return entry
 # -------------------------------------------------------------------
 def create_combobox(frame, teksti_muuttuja, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down):
     """Luo valikon ja asettaa sen frameen"""
 
-    combobox = ttk.Combobox(frame, textvariable = teksti_muuttuja, state = "readonly", width = 20, style = "bw.TCombobox")
+    combobox = ttk.Combobox(frame, textvariable = teksti_muuttuja, state = "readonly", width = 18, style = "bw.TCombobox")
     combobox.grid(column = pystyrivi, row = vaakarivi, columnspan = 1, padx = [x_left, x_right], pady = [y_up, y_down])
     return combobox
 # -------------------------------------------------------------------
@@ -120,7 +123,7 @@ def on_release(event, root, starting_frame, game_frame, level_frame, canvas, loc
             else:
                 selected_x = 99
 
-            print("event.y", event.y)
+            #print("event.y", event.y)
 
             if event.y > 79 and event.y < 120:
                 move_pieces(canvas, piece_under, selected_x, 79, level_colors, ori_level_colors, level_number)
@@ -206,7 +209,7 @@ def move_under_piece(canvas, game_piece, level_number):
 
         elif original_x_coord > 199 and original_x_coord < 300:
             original_x_coord = 199
-            
+
         elif original_x_coord > 299 and original_x_coord < 400:
             original_x_coord = 299
     else:
