@@ -168,3 +168,109 @@ def create_level_medium_1(canvas, colors_dict):
     create_medium_dots(canvas)
     return ([1, 11, 12, 22, 23, 33, 34, 35, 36, 37, 38, 39], original_colors, shuffled_colors, ori_shuffled_colors)
 # -------------------------------------------------------------------
+def create_level_medium_2(canvas, colors_dict):
+    """Luodaan medium level 2"""
+
+    original_colors = [colors_dict["r_40"], colors_dict["r_45"], colors_dict["r_50"], colors_dict["r_55"], \
+              colors_dict["r_60"], colors_dict["r_65"], colors_dict["r_70"], colors_dict["r_75"], \
+                colors_dict["r_80"], colors_dict["r_85"], colors_dict["r_90"], \
+                \
+                    colors_dict["r_p_18"], colors_dict["r_p_21"], colors_dict["r_p_24"], colors_dict["r_p_27"], \
+              colors_dict["r_p_30"], colors_dict["r_p_33"], colors_dict["r_p_36"], colors_dict["r_p_39"], \
+                colors_dict["r_p_42"], colors_dict["r_p_45"], colors_dict["r_p_48"], \
+                \
+                    colors_dict["p_40"], colors_dict["p_45"], colors_dict["p_50"], colors_dict["p_55"], \
+              colors_dict["p_60"], colors_dict["p_65"], colors_dict["p_70"], colors_dict["p_75"], \
+                colors_dict["p_80"], colors_dict["p_85"], colors_dict["p_90"]]
+
+    shuffled_colors, ori_shuffled_colors= create_level(original_colors, [0, 10, 11, 21, 22, -1])
+    create_medium_rectangles(canvas, 100, 40, 200, 80, shuffled_colors)
+
+    create_medium_dots(canvas)
+    return ([1, 11, 12, 22, 23, 33, 34, 35, 36, 37, 38, 39], original_colors, shuffled_colors, ori_shuffled_colors)
+# -------------------------------------------------------------------
+def create_level_medium_3(canvas, colors_dict):
+    """Luodaan medium level 3"""
+
+    original_colors = [colors_dict["b_40"], colors_dict["b_45"], colors_dict["b_50"], colors_dict["b_55"], \
+              colors_dict["b_60"], colors_dict["b_65"], colors_dict["b_70"], colors_dict["b_75"], \
+                colors_dict["b_80"], colors_dict["b_85"], colors_dict["b_90"], \
+                \
+                    colors_dict["b_p_18"], colors_dict["b_p_21"], colors_dict["b_p_24"], colors_dict["b_p_27"], \
+              colors_dict["b_p_30"], colors_dict["b_p_33"], colors_dict["b_p_36"], colors_dict["b_p_39"], \
+                colors_dict["b_p_42"], colors_dict["b_p_45"], colors_dict["b_p_48"], \
+                \
+                    colors_dict["p_40"], colors_dict["p_45"], colors_dict["p_50"], colors_dict["p_55"], \
+              colors_dict["p_60"], colors_dict["p_65"], colors_dict["p_70"], colors_dict["p_75"], \
+                colors_dict["p_80"], colors_dict["p_85"], colors_dict["p_90"]]
+
+    shuffled_colors, ori_shuffled_colors= create_level(original_colors, [0, 10, 11, 21, 22, -1])
+    create_medium_rectangles(canvas, 100, 40, 200, 80, shuffled_colors)
+
+    create_medium_dots(canvas)
+    return ([1, 11, 12, 22, 23, 33, 34, 35, 36, 37, 38, 39], original_colors, shuffled_colors, ori_shuffled_colors)
+# -------------------------------------------------------------------
+def create_level_medium_4(canvas, colors_dict):
+    """Luodaan medium level 4"""
+
+    original_colors = [colors_dict["b_40"], colors_dict["b_45"], colors_dict["b_50"], colors_dict["b_55"], \
+              colors_dict["b_60"], colors_dict["b_65"], colors_dict["b_70"], colors_dict["b_75"], \
+                colors_dict["b_80"], colors_dict["b_85"], colors_dict["b_90"], \
+                \
+                    colors_dict["b_t_18"], colors_dict["b_t_21"], colors_dict["b_t_24"], colors_dict["b_t_27"], \
+              colors_dict["b_t_30"], colors_dict["b_t_33"], colors_dict["b_t_36"], colors_dict["b_t_39"], \
+                colors_dict["b_t_42"], colors_dict["b_t_45"], colors_dict["b_t_48"], \
+                \
+                    colors_dict["t_40"], colors_dict["t_45"], colors_dict["t_50"], colors_dict["t_55"], \
+              colors_dict["t_60"], colors_dict["t_65"], colors_dict["t_70"], colors_dict["t_75"], \
+                colors_dict["t_80"], colors_dict["t_85"], colors_dict["t_90"]]
+
+    shuffled_colors, ori_shuffled_colors= create_level(original_colors, [0, 10, 11, 21, 22, -1])
+    create_medium_rectangles(canvas, 100, 40, 200, 80, shuffled_colors)
+
+    create_medium_dots(canvas)
+    return ([1, 11, 12, 22, 23, 33, 34, 35, 36, 37, 38, 39], original_colors, shuffled_colors, ori_shuffled_colors)
+# -------------------------------------------------------------------
+def create_level_medium_5(canvas, colors_dict):
+    """Luodaan medium level 5"""
+
+    original_colors = [colors_dict["g_40"], colors_dict["g_45"], colors_dict["g_50"], colors_dict["g_55"], \
+              colors_dict["g_60"], colors_dict["g_65"], colors_dict["g_70"], colors_dict["g_75"], \
+                colors_dict["g_80"], colors_dict["g_85"], colors_dict["g_90"], \
+                \
+                    colors_dict["g_t_18"], colors_dict["g_t_21"], colors_dict["g_t_24"], colors_dict["g_t_27"], \
+              colors_dict["g_t_30"], colors_dict["g_t_33"], colors_dict["g_t_36"], colors_dict["g_t_39"], \
+                colors_dict["g_t_42"], colors_dict["g_t_45"], colors_dict["g_t_48"], \
+                \
+                    colors_dict["t_40"], colors_dict["t_45"], colors_dict["t_50"], colors_dict["t_55"], \
+              colors_dict["t_60"], colors_dict["t_65"], colors_dict["t_70"], colors_dict["t_75"], \
+                colors_dict["t_80"], colors_dict["t_85"], colors_dict["t_90"]]
+
+    shuffled_colors, ori_shuffled_colors= create_level(original_colors, [0, 10, 11, 21, 22, -1])
+    create_medium_rectangles(canvas, 100, 40, 200, 80, shuffled_colors)
+
+    create_medium_dots(canvas)
+    return ([1, 11, 12, 22, 23, 33, 34, 35, 36, 37, 38, 39], original_colors, shuffled_colors, ori_shuffled_colors)
+# -------------------------------------------------------------------
+def create_level_medium_6(canvas, colors_dict):
+    """Luodaan medium level 6"""
+
+    original_colors = [colors_dict["g_40"], colors_dict["g_45"], colors_dict["g_50"], colors_dict["g_55"], \
+              colors_dict["g_60"], colors_dict["g_65"], colors_dict["g_70"], colors_dict["g_75"], \
+                colors_dict["g_80"], colors_dict["g_85"], colors_dict["g_90"], \
+                \
+                    colors_dict["g_y_18"], colors_dict["g_y_21"], colors_dict["g_y_24"], colors_dict["g_y_27"], \
+              colors_dict["g_y_30"], colors_dict["g_y_33"], colors_dict["g_y_36"], colors_dict["g_y_39"], \
+                colors_dict["g_y_42"], colors_dict["g_y_45"], colors_dict["g_y_48"], \
+                \
+                    colors_dict["y_40"], colors_dict["y_45"], colors_dict["y_50"], colors_dict["y_55"], \
+              colors_dict["y_60"], colors_dict["y_65"], colors_dict["y_70"], colors_dict["y_75"], \
+                colors_dict["y_80"], colors_dict["y_85"], colors_dict["y_90"]]
+
+    shuffled_colors, ori_shuffled_colors= create_level(original_colors, [0, 10, 11, 21, 22, -1])
+    create_medium_rectangles(canvas, 100, 40, 200, 80, shuffled_colors)
+
+    create_medium_dots(canvas)
+    return ([1, 11, 12, 22, 23, 33, 34, 35, 36, 37, 38, 39], original_colors, shuffled_colors, ori_shuffled_colors)
+# -------------------------------------------------------------------
+

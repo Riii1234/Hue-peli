@@ -170,7 +170,9 @@ def player_creation(player_creation_frame, name_variable, player_combobox):
         #new player dict creation
         new_player = {}
         new_player["username"] = name
-        new_player["incomplete_levels"] = ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '2.1', '2.2', '2.3', '3.1', '3.2', '3.3']
+        new_player["incomplete_levels"] = ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', \
+                                           '2.1', '2.2', '2.3', '2.4', '2.5', '2.6', \
+                                            '3.1', '3.2', '3.3', '3.4', '3.5', '3.6']
         new_player["complete_levels_best"] = {}
         player_list.append(new_player)
         player_data_writer(player_list)

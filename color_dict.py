@@ -55,7 +55,7 @@ def create_color_names_n_codes():
             elif i == "b_p":
                 create_light_or_dark_color(temp_dict, a, i, count-1, count2, 255, count-1, 0, count2+255)
             elif i == "r_p":
-                create_light_or_dark_color(temp_dict, a, i, 255, count-1, count2, count2+255, 0, count-1)
+                create_light_or_dark_color(temp_dict, a, i, 255, count2, count-1, count2+255, 0, count-1)
                 
             count -= 5
             count2 -= 10

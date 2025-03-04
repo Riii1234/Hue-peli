@@ -5,7 +5,7 @@ def start_terminal():
     """Käynnistää terminaalin ja luo tyylit widgeteille"""
     # Luo ruudun ja antaa sille yläpalkkiin nimen
     root = tk.Tk()
-    root.title("Hue Peli")
+    root.title("Hue-Peli")
 
     # Ruudun aloituskoko ja taustaväri
     root.geometry("600x600+0+0")

@@ -27,7 +27,7 @@ def create_starting_frame(starting_frame, root):
 
     # Luodaan teksti (frame, teksti, tyyli, pystyrivi, vaakarivi, x_left, x_right, y_up, y_down)
     # Widgetin alle saa tilaa lisäämällä y_down:ia ja ylle saa tilaa lisäämällä y_up:ia
-    create_label(starting_frame, "Hue Peli", "white2.TLabel", 1, 1, 1, 1, 1, 40)
+    create_label(starting_frame, "Hue-Peli", "white2.TLabel", 1, 1, 1, 1, 1, 40)
 
     create_label(starting_frame, "Choose User", "white.TLabel", 1, 2, 1, 1, 1, 5)
 
@@ -171,6 +171,21 @@ def start_level(root, starting_frame, level_frame, level_name, chosen_name):
 
     elif level_name == "Medium 1":
         locked, original_colors, shuffled_colors, ori_shuffled_colors = create_level_medium_1(canvas, colors_dict)
+
+    elif level_name == "Medium 2":
+        locked, original_colors, shuffled_colors, ori_shuffled_colors = create_level_medium_2(canvas, colors_dict)
+
+    elif level_name == "Medium 3":
+        locked, original_colors, shuffled_colors, ori_shuffled_colors = create_level_medium_3(canvas, colors_dict)
+
+    elif level_name == "Medium 4":
+        locked, original_colors, shuffled_colors, ori_shuffled_colors = create_level_medium_4(canvas, colors_dict)
+
+    elif level_name == "Medium 5":
+        locked, original_colors, shuffled_colors, ori_shuffled_colors = create_level_medium_5(canvas, colors_dict)
+
+    elif level_name == "Medium 6":
+        locked, original_colors, shuffled_colors, ori_shuffled_colors = create_level_medium_6(canvas, colors_dict)
 
     # Bindataan hiiren painallus, vetäminen ja irti-päästäminen eventteihin
     canvas.bind("<Button-1>", lambda event:on_click(event, canvas, locked))
