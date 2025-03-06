@@ -57,11 +57,15 @@ def player_data_loader():
 #writing player data
 def player_data_writer(player_list):
     """writes the player list down into the csv file"""
+    #sorts the usernames alphabetically
+    sorted_player_list = sorted(player_list, key=lambda x: x['username'])
+
+    #writes the data to the fields
     fields = ["username","incomplete_levels","complete_levels_best"]
     with open(f"player_data.csv","w",newline="",encoding='utf-8-sig', errors='replace') as player_file:
         writer = csv.DictWriter(player_file,fieldnames=fields)
         writer.writeheader()
-        writer.writerows(player_list)
+        writer.writerows(sorted_player_list)
     return
 
 #in the beginning...
@@ -333,7 +337,8 @@ def score_comparison(player_tag: str, level_number: str, move_count, game_comple
 os.system("cls")
 #game_start()
 #test
-player_list = player_data_loader()
+#player_list = player_data_loader()
+#player_data_writer(player_list)
 #player_data_writer(player_list)
 
 #score_comparison("BOB", "1.1", 21)
