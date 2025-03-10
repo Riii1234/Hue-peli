@@ -113,7 +113,7 @@ def player_selection():
     to_hue(user)
 
 #creates a user for yourself
-def player_creation(player_creation_frame, name_variable, player_combobox):
+def player_creation(player_creation_frame, starting_frame, name_variable, player_combobox, label_warning):
     """Helps create a three letter username for yourself, all other data is predefined"""
     player_list = player_data_loader()
     alphabet = "ABCDEFGHIJKLMNOPQRSTYVWXYZÅÄÖ"
@@ -131,18 +131,17 @@ def player_creation(player_creation_frame, name_variable, player_combobox):
             #print()
             #return
         #length check
-        #if len(name) != 3:
+        if len(name) != 3:
+            label_warning.set("Username is not 3 letters!")
             #print("\nYour username isn't three characters long\n")
-            #continue
-
+            break
         #wrong character check
         invalid_characters = False
         for letter in name:
             if letter not in alphabet:
                 invalid_characters = True
         if invalid_characters == True:
-            layout_common_functions.create_label(player_creation_frame, \
-                    "Invalid username!", "white.TLabel", 0, 4, 10, 10, 10, 20)
+            label_warning.set("Invalid username!")
             #print("\nYour username contains something it shouldn't\n")
             break
         #pre-existing check:
@@ -152,8 +151,7 @@ def player_creation(player_creation_frame, name_variable, player_combobox):
                 duplicate_name = True
                 break
         if duplicate_name == True:
-            layout_common_functions.create_label(player_creation_frame, \
-                    "Username already in use!", "white.TLabel", 0, 4, 10, 10, 10, 20)
+            label_warning.set("Username already in use!")
             #print("\nThat username already exists\n")
             break
         #confirmation
@@ -183,11 +181,10 @@ def player_creation(player_creation_frame, name_variable, player_combobox):
         #break
         print()
         to_hue(new_player)
-        layout_common_functions.create_label(player_creation_frame, \
-                    "Username created!", "white.TLabel", 0, 4, 10, 10, 10, 20)
 
         # Sulkee pelaaja-nimen luonnin välilehden
-        player_creation_frame.grid_forget()
+        from layout import change_frame
+        change_frame(starting_frame, player_creation_frame)
 
         from layout import set_player_combobox
         # Asettaa nimet uudelleen valikkoon, jotta uusikin nimi näkyy siinä
@@ -195,7 +192,7 @@ def player_creation(player_creation_frame, name_variable, player_combobox):
 
 
 #deletes a user
-def player_deletion(player_delete_frame, name_variable, player_combobox):
+def player_deletion(player_delete_frame, starting_frame, name_variable, player_combobox, label_warning2):
     """Helps you delete a player and then goes back to game_start"""
     player_list = player_data_loader()
     alphabet = "ABCDEFGHIJKLMNOPQRSTYVWXYZÅÄÖ"
@@ -214,8 +211,7 @@ def player_deletion(player_delete_frame, name_variable, player_combobox):
             if letter not in alphabet:
                 invalid_characters = True
         if invalid_characters == True:
-            layout_common_functions.create_label(player_delete_frame, \
-                    "Invalid username!", "white.TLabel", 0, 4, 10, 10, 10, 20)
+            label_warning2.set("Invalid username!")
             break
 
         copy_list = []
@@ -224,22 +220,21 @@ def player_deletion(player_delete_frame, name_variable, player_combobox):
             if data["username"] != tag:
                 copy_list.append(data)
             else:
-                print(f"\nDeleted {tag}\n")
-                layout_common_functions.create_label(player_delete_frame, \
-                    f"Deleted {tag}", "white.TLabel", 0, 4, 10, 10, 10, 20)
+                #print(f"\nDeleted {tag}\n")
+                label_warning2.set(f"Deleted {tag}")
                 deleted = True
         if deleted == True:
             player_data_writer(copy_list)
             # Sulkee pelaajan poistamis-välilehden
-            player_delete_frame.grid_forget()
+            from layout import change_frame
+            change_frame(starting_frame, player_delete_frame)
 
             # Poistetaan valittu tag valikosta
             layout_common_functions.delete_from_combobox(player_combobox, tag)
             break
         else:
-            print("\nNo match was found\n")
-            layout_common_functions.create_label(player_delete_frame, \
-                    "No match was found", "white.TLabel", 0, 4, 10, 10, 10, 20)
+            #print("\nNo match was found\n")
+            label_warning2.set("No match was found")
             break
             
 #test function
@@ -302,32 +297,20 @@ def score_comparison(player_tag: str, level_number: str, move_count, game_comple
 
     #score countings
     print()
+    label1 = layout_common_functions.create_label(game_complete_frame, "blue.TLabel", 0, 4, 10, 10, 10, 20)
+    label2 = layout_common_functions.create_label(game_complete_frame, "blue.TLabel", 0, 5, 10, 10, 10, 20)
     if old_move_count == 0:
-        layout_common_functions.create_label(game_complete_frame, "Your first score is your best score", "white.TLabel", 0, 3, 10, 10, 10, 20)
-        #print("Your first score is your best score")
-        layout_common_functions.create_label(game_complete_frame, f"Score: {move_count}", "white.TLabel", 0, 4, 10, 10, 10, 20)
-        #print(f"Score: {move_count}\n")
+        label1.set(f"Score: {move_count}")
     elif move_count > old_move_count:
-        layout_common_functions.create_label(game_complete_frame, "This isn't your best score", "white.TLabel", 0, 3, 10, 10, 10, 20)
-        #print("This isn't your best score")
-        layout_common_functions.create_label(game_complete_frame, f"Current score: {move_count}", "white.TLabel", 0, 4, 10, 10, 10, 20)
-        #print(f"Current score: {move_count}")
-        layout_common_functions.create_label(game_complete_frame, f"Best score: {old_move_count}", "white.TLabel", 0, 5, 10, 10, 10, 20)
-        #print(f"Best score: {old_move_count}\n")
+        label1.set(f"Current score: {move_count}")
+        label2.set(f"Best score: {old_move_count}")
     elif move_count < old_move_count:
-        layout_common_functions.create_label(game_complete_frame, "This is your best score", "white.TLabel", 0, 3, 10, 10, 10, 20)
-        #print("This is your best score")
-        layout_common_functions.create_label(game_complete_frame, f"New best score: {move_count}", "white.TLabel", 0, 4, 10, 10, 10, 20)
-        #print(f"New best score: {move_count}")
-        layout_common_functions.create_label(game_complete_frame, f"Old best score: {old_move_count}", "white.TLabel", 0, 5, 10, 10, 10, 20)
-        #print(f"Old best score: {old_move_count}\n")
+        label1.set(f"New best score: {move_count}")
+        label2.set(f"Old best score: {old_move_count}")
     elif move_count == old_move_count:
-        layout_common_functions.create_label(game_complete_frame, "This score is tied with a previous best score", "white.TLabel", 0, 3, 10, 10, 10, 20)
-        #print("This score is tied with a previous best score")
-        layout_common_functions.create_label(game_complete_frame, f"Score: {move_count}", "white.TLabel", 0, 4, 10, 10, 10, 20)
-        #print(f"Score: {move_count}\n")
-    layout_common_functions.create_label(game_complete_frame, f"Globally you are ranked: {rank_counter}", "white.TLabel", 0, 6, 10, 10, 10, 20)
-    #print(f"Globally you are ranked: {rank_counter}")
+        label1.set(f"Score: {move_count}")
+    label3 = layout_common_functions.create_label(game_complete_frame, "blue.TLabel", 0, 6, 10, 10, 10, 20)
+    label3.set(f"Globally you are ranked: {rank_counter}")
 
     #IMPORTANT: below is the file writer, disabled for testings
     player_data_writer(new_player_list)
